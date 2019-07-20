@@ -209,6 +209,8 @@ namespace :sidekiq do
   def pid_files
     sidekiq_roles = Array(fetch(:sidekiq_roles)).dup
     sidekiq_roles.select! { |role| host.roles.include?(role) }
+    # gran hack
+    sidekiq_roles = [:app]
     sidekiq_roles.flat_map do |role|
       processes = fetch(:"#{ role }_processes") || fetch(:sidekiq_processes)
       Array.new(processes) { |idx| fetch(:sidekiq_pid).gsub(/\.pid$/, "-#{idx}.pid") }
